@@ -1,3 +1,5 @@
+import database from "../../../../infra/database";
+
 const status = (request, response) => {
   response.status(200).json({
     status: "OK",
