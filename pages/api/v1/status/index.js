@@ -1,4 +1,4 @@
-import database from "../../../../infra/database";
+import database from "infra/database.js";
 
 const status = (request, response) => {
   response.status(200).json({
