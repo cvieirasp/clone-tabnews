@@ -1,5 +1,14 @@
 import { Client } from "pg";
 
+const getSSLValues = () => {
+  if (process.env.POSTGRES_CA) {
+    return {
+      ca: process.env.POSTGRES_CA,
+    };
+  }
+  return process.env.NODE_ENV === "development" ? false : true;
+};
+
 async function query(queryObject) {
   const client = new Client({
     host: process.env.POSTGRES_HOST,
@@ -7,10 +16,11 @@ async function query(queryObject) {
     user: process.env.POSTGRES_USER,
     database: process.env.POSTGRES_DB,
     password: process.env.POSTGRES_PASSWORD,
+    ssl: getSSLValues(),
   });
 
-  await client.connect();
   try {
+    await client.connect();
     const result = await client.query(queryObject);
     return result;
   } catch (err) {
